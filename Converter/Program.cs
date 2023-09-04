@@ -15,24 +15,26 @@ static class Program
         // Console.WriteLine(json);
 
         List<Airport>? airportsInput = JsonConvert.DeserializeObject<List<Airport>>(json);
+        Console.WriteLine("airportsInput.Capacity ==>> " + airportsInput.Capacity);
 
         using AirportContext airPorts = new();
-        for (int i = 0; i < airportsInput.Capacity; i++)
+        for (int i = 0; i < airportsInput.Count; i++)
         {
             var APort = airportsInput[i];
-            airPorts.Airports.Add()
+            
+            if (airportsInput[i] != null)
+            {
+                airPorts.Airports.Add(ConverterToAirportDb(APort));
+            }
         }
 
         airPorts.SaveChanges();
-
-
-        // var AER = airports.FirstOrDefault(x => x.IataCode == "AER");
-        //Console.WriteLine("Город " +AER.CityEng);
     }
 
     public static AirportDb ConverterToAirportDb(Airport airport)
     {
-        AirportDb airportDb = null;
+        AirportDb airportDb = new AirportDb();
+
 
         airportDb.IataCode = airport.IataCode;
         airportDb.CityEng = airport.CityEng;
