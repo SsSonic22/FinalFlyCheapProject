@@ -10,13 +10,11 @@ class Program
 {
     static async Task Main()
     {
-        StringBuilder sb = new StringBuilder();
-        ApiAviaSales _apiAviaSales = new ApiAviaSales();
+        var sb = new StringBuilder();
+        var apiAviaSales = new ApiAviaSales();
 
         Console.WriteLine("город отправления: ");
         var start = Console.ReadLine();
-        _apiAviaSales.FindAnAirports(start);
-        /*
         Console.WriteLine("город прибытия: ");
         var fininale = Console.ReadLine();
         Console.WriteLine("дата отправления: ");
@@ -24,6 +22,25 @@ class Program
         Console.WriteLine("дата возврата: ");
         var dataReturn = Console.ReadLine();
 
+        var flight = apiAviaSales.FlightSearchRequestCreating(dataStart, dataReturn, start, fininale);
+
+        if (flight.success)
+            foreach (var data in flight.data)
+            {
+                sb.Append("\n Пункт отправления: " + data.origin_airport);
+                sb.Append("\n Пункт назначения: " + data.destination_airport);
+                sb.Append("\n Время отправления: " + data.departure_at);
+                sb.Append("\n Время прибытия: " + data.return_at);
+                sb.Append("\n Цена: " + data.price);
+                sb.Append("\n -------------------------------");
+            }
+
+        Console.WriteLine(sb.ToString());
+
+        // _apiAviaSales.FindAnAirports(start);
+
+
+/*
         var data = _apiAviaSales.FlightSearch(dataStart, dataReturn, start, fininale);
         Console.WriteLine(data.success);
         var route = data.data.ToList();
