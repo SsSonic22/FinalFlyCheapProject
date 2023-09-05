@@ -15,6 +15,8 @@ class Program
 
         Console.WriteLine("город отправления: ");
         var start = Console.ReadLine();
+        _apiAviaSales.FindAnAirports(start);
+        /*
         Console.WriteLine("город прибытия: ");
         var fininale = Console.ReadLine();
         Console.WriteLine("дата отправления: ");
@@ -37,6 +39,7 @@ class Program
         }
 
         Console.WriteLine(sb.ToString());
+        */
     }
 }
 
