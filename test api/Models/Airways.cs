@@ -18,11 +18,11 @@
         public string destination { get; set; }
         public DateTime return_at { get; set; }
         public string origin { get; set; }
-        public decimal price { get; set; }  // Обновленный тип данных
-        public decimal return_transfers { get; set; }  // Обновленный тип данных
-        public decimal duration { get; set; }  // Обновленный тип данных
-        public decimal duration_to { get; set; }  // Обновленный тип данных
-        public decimal duration_back { get; set; }  // Обновленный тип данных
-        public decimal transfers { get; set; }  // Обновленный тип данных
+        public decimal price { get; set; } // Обновленный тип данных
+        public decimal return_transfers { get; set; } // Обновленный тип данных
+        public decimal duration { get; set; } // Обновленный тип данных
+        public decimal duration_to { get; set; } // Обновленный тип данных
+        public decimal duration_back { get; set; } // Обновленный тип данных
+        public decimal transfers { get; set; } // Обновленный тип данных
     }
 }

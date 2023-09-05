@@ -12,7 +12,7 @@ class Program
     {
         StringBuilder sb = new StringBuilder();
         ApiAviaSales _apiAviaSales = new ApiAviaSales();
-        
+
         Console.WriteLine("город отправления: ");
         var start = Console.ReadLine();
         Console.WriteLine("город прибытия: ");
@@ -21,20 +21,21 @@ class Program
         var dataStart = Console.ReadLine();
         Console.WriteLine("дата возврата: ");
         var dataReturn = Console.ReadLine();
-        
-        var data = _apiAviaSales.FlightSearch(dataStart, dataReturn,start, fininale);
+
+        var data = _apiAviaSales.FlightSearch(dataStart, dataReturn, start, fininale);
         Console.WriteLine(data.success);
         var route = data.data.ToList();
-        
+
         foreach (var data1 in route)
         {
-            sb.Append("\n Пункт отправления: " + data1.origin_airport );
+            sb.Append("\n Пункт отправления: " + data1.origin_airport);
             sb.Append("\n Пункт назначения: " + data1.destination_airport);
             sb.Append("\n Время отправления: " + data1.departure_at);
             sb.Append("\n Время прибытия: " + data1.return_at);
             sb.Append("\n Цена: " + data1.price);
             sb.Append("\n -------------------------------");
         }
+
         Console.WriteLine(sb.ToString());
     }
 }

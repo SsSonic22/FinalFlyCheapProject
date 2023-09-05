@@ -12,7 +12,7 @@ public class AirportDb
     public string NameEng { get; set; }
     public string CityRus { get; set; }
     public string CityEng { get; set; }
-    
+
     public double? GmtOffset { get; set; }
     public string CountryRus { get; set; }
     public string CountryEng { get; set; }
