@@ -10,6 +10,12 @@ class Program
 {
     static async Task Main()
     {
+        List<Aviacompany> aviaCompanies = new List<Aviacompany>();
+
+        //var aviaCompaniesJson = File.ReadAllText(@"D:\AirCompanies.json");
+       // aviaCompanies = JsonConvert.DeserializeObject<List<Aviacompany>>(aviaCompaniesJson);
+          
+             //return;
         var sb = new StringBuilder();
         var apiAviaSales = new ApiAviaSales();
 
@@ -30,7 +36,7 @@ class Program
                 sb.Append("\n Пункт отправления: " + data.origin_airport);
                 sb.Append("\n Пункт назначения: " + data.destination_airport);
                 sb.Append("\n Время отправления: " + data.departure_at);
-                sb.Append("\n Время прибытия: " + data.return_at);
+                sb.Append("\n Время в пути: " + data.duration);
                 sb.Append("\n Цена: " + data.price);
                 sb.Append("\n -------------------------------");
             }

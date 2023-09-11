@@ -6,15 +6,21 @@ namespace Converter;
 static class Program
 {
     // Путь к файлу JSON
-    static string filePath = @"D:\Array.json";
+    private static string _filePath = @"D:\AirCompanies.json"; //@"D:\Array.json";
+    private static Aviacompany _aviacompany = new Aviacompany();
 
     static void Main()
     {
         Console.WriteLine("Start");
-        string json = File.ReadAllText(filePath);
+        _aviacompany.StringToListConverter(_filePath);
+        
+        
+        /*
+        string json = File.ReadAllText(_filePath);
         // Console.WriteLine(json);
 
         List<Airport>? airportsInput = JsonConvert.DeserializeObject<List<Airport>>(json);
+        
         Console.WriteLine("airportsInput.Capacity ==>> " + airportsInput.Capacity);
 
         using AirportContext airPorts = new();
@@ -29,6 +35,7 @@ static class Program
         }
 
         airPorts.SaveChanges();
+        */
     }
 
     public static AirportDb ConverterToAirportDb(Airport airport)

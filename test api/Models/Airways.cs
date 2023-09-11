@@ -2,12 +2,12 @@
 {
     public class Airways
     {
-        public List<Data> data { get; set; }
+        public List<FlightData> data { get; set; }
         public string currency { get; set; }
         public bool success { get; set; }
     }
 
-    public class Data
+    public class FlightData
     {
         public string flight_number { get; set; }
         public string link { get; set; }

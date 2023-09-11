@@ -5,7 +5,8 @@ namespace Test_api;
 
 public class AirportDb
 {
-    [Key] public int Id { get; set; }
+    [Key] 
+    public int Id { get; set; }
     public string IataCode { get; set; }
     public string IcaoCode { get; set; }
     public string NameRus { get; set; }

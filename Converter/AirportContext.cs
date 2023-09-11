@@ -6,6 +6,8 @@ namespace Converter;
 public class AirportContext : DbContext
 {
     public DbSet<AirportDb> Airports { get; set; }
+    public DbSet<AviacompanyDb> Aviacompanyes { get; set; }
+    
     public static string _connectionString = "Host=localhost;Username=postgres;Password=123;Database=postgres";
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

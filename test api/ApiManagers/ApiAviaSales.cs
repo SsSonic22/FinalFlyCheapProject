@@ -23,7 +23,9 @@ namespace Test_api.ApiManagers;
  
      string
          unique = "false"; // Возвращает только уникальные маршруты (если указан только origin, true или false, по умолчанию: false)
- 
+
+    
+     
      public Airways FlightSearchRequestCreating(string departureDate, string? returnDate = null,
          string departureCity = "none",
          string destinationCity = "none")
@@ -47,7 +49,7 @@ namespace Test_api.ApiManagers;
          {
              currency = "",
              success = false,
-             data = new List<Data>()
+             data = new List<FlightData>()
          };
  
          var httpRequest = new ObjectForHttpRequest();
