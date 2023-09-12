@@ -1,6 +1,7 @@
-﻿namespace Converter.Models;
+﻿using Converter.Utility_Components;
+namespace Converter.Models;
 
-public class AviacompanyJson
+public class AviacompanyJson 
 {
     public string name { get; set; }
     public string iata_code { get; set; }

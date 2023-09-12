@@ -26,7 +26,7 @@ namespace Test_api.ApiManagers;
 
     
      
-     public Airways FlightSearchRequestCreating(string departureDate, string? returnDate = null,
+     public AirwaysJson FlightSearchRequestCreating(string departureDate, string? returnDate = null,
          string departureCity = "none",
          string destinationCity = "none")
      {
@@ -43,9 +43,9 @@ namespace Test_api.ApiManagers;
          return RequestFlight(flightData);
      }
  
-     private Airways RequestFlight(ObjectForRequestFlight flightData)
+     private AirwaysJson RequestFlight(ObjectForRequestFlight flightData)
      {
-         Airways airways = new Airways
+         AirwaysJson airwaysJson = new AirwaysJson
          {
              currency = "",
              success = false,
@@ -69,12 +69,12 @@ namespace Test_api.ApiManagers;
                      string content = HttpRequest(httpRequest);
                      if (!string.IsNullOrEmpty(content))
                      {
-                         Airways airways1 = JsonConvert.DeserializeObject<Airways>(content);
+                         AirwaysJson airways1 = JsonConvert.DeserializeObject<AirwaysJson>(content);
                          if (airways1.success)
                          {
-                             airways.data.AddRange(airways1.data);
-                             airways.success = true;
-                             airways.currency = airways1.currency;
+                             airwaysJson.data.AddRange(airways1.data);
+                             airwaysJson.success = true;
+                             airwaysJson.currency = airways1.currency;
                          }
                      }
                  }
@@ -85,7 +85,7 @@ namespace Test_api.ApiManagers;
              }
          }
  
-         return airways;
+         return airwaysJson;
      }
      
      private string? HttpRequest(ObjectForHttpRequest httpRequest)

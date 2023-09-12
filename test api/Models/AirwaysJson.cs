@@ -1,6 +1,6 @@
 ﻿namespace Test_api
 {
-    public class Airways
+    public class AirwaysJson
     {
         public List<FlightData> data { get; set; }
         public string currency { get; set; }

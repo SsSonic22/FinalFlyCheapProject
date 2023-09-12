@@ -84,7 +84,7 @@ class Program
                     string content = await response.Content.ReadAsStringAsync();
                     // Далее можете обрабатывать данные из ответа (content)
                     //Console.WriteLine(content);
-                    airways = JsonConvert.DeserializeObject<Airways>(content);
+                    airways = JsonConvert.DeserializeObject<AirwaysJson>(content);
                 }
                 else
                 {
