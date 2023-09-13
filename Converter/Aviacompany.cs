@@ -19,7 +19,7 @@ public class Aviacompany
     /// </summary>
     /// <param name="aviacompany"></param>
     /// <returns></returns>
-    private bool RepeatCheckingAndAddToDb(List<AviacompanyJson> listAviacompanyJsons)
+    private bool RepeatCheckingAndAddToDb1(List<AviacompanyJson> listAviacompanyJsons)
     {
         var cleanInputData = CleaningInputData(listAviacompanyJsons);
         AviacompanyDb aviacompanyDb;
@@ -58,6 +58,74 @@ public class Aviacompany
         return true;
     }
 
+    private bool RepeatCheckingAndAddToDb(List<AviacompanyJson> listAviacompanyJsons)
+    {
+        var cleanInputData = CleaningInputData(listAviacompanyJsons);
+        var bufferListAviacompanyDb = new List<AviacompanyDb>();
+
+        foreach (var aviacompanyJson in cleanInputData)
+        {
+            var aviacompanyDb = new AviacompanyDb()
+            {
+                icao_code = aviacompanyJson.icao_code ?? "none",
+                iata_code = aviacompanyJson.iata_code,
+                name = aviacompanyJson.name ?? "none",
+            };
+            bufferListAviacompanyDb.Add(aviacompanyDb);
+        }
+
+        using var aviacompanyes = new AviaInfoContext();
+        var differences = bufferListAviacompanyDb.Except(aviacompanyes.Aviacompanyes).ToList();
+        aviacompanyes.Aviacompanyes.AddRange(differences);
+
+        try
+        {
+            aviacompanyes.SaveChanges();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Ошибка записи в базу данных! " + e);
+            return false;
+        }
+    }
+    private bool RepeatCheckingAndAddToDb3(List<AviacompanyJson> listAviacompanyJsons)
+    {
+        var cleanInputData = CleaningInputData(listAviacompanyJsons);
+
+        using var aviacompanyes = new AviaInfoContext();
+
+        foreach (var aviacompanyJson in cleanInputData)
+        {
+            var existingRecord = aviacompanyes.Aviacompanyes.FirstOrDefault(x =>
+                x.iata_code == aviacompanyJson.iata_code &&
+                x.icao_code == (aviacompanyJson.icao_code ?? "none") &&
+                x.name == (aviacompanyJson.name ?? "none"));
+
+            if (existingRecord == null)
+            {
+                var aviacompanyDb = new AviacompanyDb()
+                {
+                    icao_code = aviacompanyJson.icao_code ?? "none",
+                    iata_code = aviacompanyJson.iata_code,
+                    name = aviacompanyJson.name ?? "none",
+                };
+                aviacompanyes.Aviacompanyes.Add(aviacompanyDb);
+            }
+        }
+
+        try
+        {
+            aviacompanyes.SaveChanges();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Ошибка записи в базу данных! " + e);
+            return false;
+        }
+    }
+
     private List<AviacompanyJson> CleaningInputData(List<AviacompanyJson> aviacompanyInput)
     {
         //VueAviacompanyJson(aviacompanyInput);
@@ -65,9 +133,9 @@ public class Aviacompany
             .Where(x => !string.IsNullOrEmpty(x.iata_code))
             .DistinctBy(x => new {x.iata_code, x.name, x.icao_code})
             .ToList();
-        
+
         input.Where(x => x.icao_code == null).ToList().ForEach(x => x.icao_code = "none");
-        
+
         return input;
     }
 }
