@@ -12,7 +12,7 @@ static class Program
     static void Main()
     {
         Console.WriteLine("Start");
-        _aviacompany.StringToListConverter(_filePath);
+        _aviacompany.Converter(_filePath);
         
         
         /*
@@ -23,7 +23,7 @@ static class Program
         
         Console.WriteLine("airportsInput.Capacity ==>> " + airportsInput.Capacity);
 
-        using AirportContext airPorts = new();
+        using AviaInfoContext airPorts = new();
         for (int i = 0; i < airportsInput.Count; i++)
         {
             var APort = airportsInput[i];

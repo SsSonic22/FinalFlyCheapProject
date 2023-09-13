@@ -1,4 +1,5 @@
-﻿using Converter.Models;
+﻿using System.Text;
+using Converter.Models;
 using Converter.Utility_Components;
 using Newtonsoft.Json;
 
@@ -6,92 +7,67 @@ namespace Converter;
 
 public class Aviacompany
 {
-    public void StringToListConverter(string filePath)
+    public void Converter(string filePath)
     {
         string json = File.ReadAllText(filePath);
-        // Console.WriteLine(json);
-        List<AviacompanyJson>? aviacompanyesInput = JsonConvert.DeserializeObject<List<AviacompanyJson>>(json);
+        var ok = RepeatCheckingAndAddToDb(JsonConvert.DeserializeObject<List<AviacompanyJson>>(json));
+        if (ok) Console.WriteLine("База данных обновлена!");
+    }
 
-        var selectedAviacompany = aviacompanyesInput
-            .Where(x => x
-                .iata_code != null && x
-                .name != null || x
-                .iata_code != "" && x
-                .name != "")
+    /// <summary>
+    /// Функция проверяющая на наличие в базе данных аналогичных данных и добавляющая записи в случае их отсутствия
+    /// </summary>
+    /// <param name="aviacompany"></param>
+    /// <returns></returns>
+    private bool RepeatCheckingAndAddToDb(List<AviacompanyJson> listAviacompanyJsons)
+    {
+        var cleanInputData = CleaningInputData(listAviacompanyJsons);
+        AviacompanyDb aviacompanyDb;
+
+        using AviaInfoContext aviacompanyes = new();
+        for (int i = 0; i < cleanInputData.Count; i++)
+        {
+            var recordExists = aviacompanyes.Aviacompanyes
+                .Any(x => x
+                    .iata_code == cleanInputData[i].iata_code && x
+                    .icao_code == cleanInputData[i].icao_code && x
+                    .name == cleanInputData[i].name);
+
+            if (!recordExists)
+            {
+                aviacompanyDb = new AviacompanyDb()
+                {
+                    icao_code = cleanInputData[i].icao_code,
+                    iata_code = cleanInputData[i].iata_code,
+                    name = cleanInputData[i].name,
+                };
+                aviacompanyes.Aviacompanyes.Add(aviacompanyDb);
+            }
+        }
+
+        try
+        {
+            aviacompanyes.SaveChanges();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Ошибка записи в базу данных! " + e);
+            return false;
+        }
+
+        return true;
+    }
+
+    private List<AviacompanyJson> CleaningInputData(List<AviacompanyJson> aviacompanyInput)
+    {
+        //VueAviacompanyJson(aviacompanyInput);
+        var input = aviacompanyInput
+            .Where(x => !string.IsNullOrEmpty(x.iata_code))
             .DistinctBy(x => new {x.iata_code, x.name, x.icao_code})
             .ToList();
-
-
-        using AirportContext aviacompanyes = new();
-
-        for (int i = 0; i < selectedAviacompany.Count; i++)
-        {
-            var AirlinesWithoutRepeats = RepeatCheckingForAddToDb(selectedAviacompany[i]);
-            if (AirlinesWithoutRepeats is {Ok: true})
-            {
-                
-            }
-
-            var aviacompanyToDbConvert = AviacompanyToDbConverter(AirlinesWithoutRepeats);
-            if (aviacompanyToDbConvert is {Ok: true, Content: not null})
-            {
-                var aviacompanyToDb = (AviacompanyDb) aviacompanyToDbConvert.Content;
-                aviacompanyes.Aviacompanyes.Add(aviacompanyToDb);
-            }
-        }
-        // aviacompanyes.SaveChanges();
-    }
-
-    private TransferObject AviacompanyToDbConverter(AviacompanyJson aviacompany)
-    {
-        var aviacompanyTO = new TransferObject();
-
-        if (aviacompany.icao_code == null) aviacompany.icao_code = "";
-        if (aviacompany.iata_code == null)
-        {
-            aviacompanyTO.Ok = false;
-            return aviacompanyTO;
-        }
-
-        if (aviacompany.name == null)
-        {
-            aviacompanyTO.Ok = false;
-            return aviacompanyTO;
-        }
-
-        AviacompanyDb aviacompanyDb = new AviacompanyDb
-        {
-            iata_code = aviacompany.iata_code,
-            icao_code = aviacompany.icao_code,
-            name = aviacompany.name
-        };
-
-        aviacompanyTO.Content = aviacompanyDb;
-
-        return aviacompanyTO;
-    }
-
-    private TransferObject RepeatCheckingForAddToDb(AviacompanyJson aviacompany)
-    {
-        if (aviacompany != null)
-        {
-            
-        }
-    }
-
-    private AviacompanyDb AviacompanyNoDbConverter1(AviacompanyJson aviacompany)
-    {
-        if (aviacompany.iata_code == null) aviacompany.iata_code = "";
-        if (aviacompany.icao_code == null) aviacompany.icao_code = "";
-        if (aviacompany.name == null) aviacompany.name = "";
-
-        AviacompanyDb aviacompanyDb = new AviacompanyDb
-        {
-            iata_code = aviacompany.iata_code,
-            icao_code = aviacompany.icao_code,
-            name = aviacompany.name
-        };
-
-        return aviacompanyDb;
+        
+        input.Where(x => x.icao_code == null).ToList().ForEach(x => x.icao_code = "none");
+        
+        return input;
     }
 }
