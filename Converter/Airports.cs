@@ -24,10 +24,10 @@ public class Airports
     {
         var cleanInputData = CleaningInputData(airportsJson);
         var bufferListAirportDb = new List<AirportDb>();
-        AirportDb airportDb;
+       
         foreach (var airport in cleanInputData)
         {
-             airportDb = new AirportDb
+            var airportDb = new AirportDb
              {
                 IcaoCode = airport.IcaoCode, //?? "none",
                 IataCode = airport.IataCode,

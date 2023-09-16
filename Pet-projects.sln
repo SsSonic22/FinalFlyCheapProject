@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test api", "test api\test a
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converter", "Converter\Converter.csproj", "{AAD6BA41-E4AB-4FF2-851B-50C7EC446EBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlyCheap", "FlyCheap\FlyCheap.csproj", "{CA86E59B-E470-43DF-9F34-59E73DC9AA94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{AAD6BA41-E4AB-4FF2-851B-50C7EC446EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAD6BA41-E4AB-4FF2-851B-50C7EC446EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAD6BA41-E4AB-4FF2-851B-50C7EC446EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA86E59B-E470-43DF-9F34-59E73DC9AA94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA86E59B-E470-43DF-9F34-59E73DC9AA94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA86E59B-E470-43DF-9F34-59E73DC9AA94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA86E59B-E470-43DF-9F34-59E73DC9AA94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

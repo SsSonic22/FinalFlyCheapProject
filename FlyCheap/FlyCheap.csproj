@@ -2,12 +2,14 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>test_api</RootNamespace>
+        <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Converter\" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="EntityFramework6.Npgsql" Version="6.4.3" />
@@ -16,20 +18,10 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Npgsql" Version="7.0.4" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <Folder Include="Converter\" />
-      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>
