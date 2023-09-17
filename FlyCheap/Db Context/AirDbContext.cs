@@ -2,7 +2,7 @@
 using FlyCheap.Models;
 namespace FlyCheap.Db_Context;
 
-public class AirportContext : DbContext
+public class AirDbContext : DbContext
 {
     public DbSet<AirportDb> Airports { get; set; }
     public static string _connectionString = "Host=localhost;Username=postgres;Password=123;Database=postgres";

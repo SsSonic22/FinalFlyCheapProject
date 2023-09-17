@@ -29,7 +29,7 @@ public class ApiForRequestDb
     /// <param name="language"></param>
     /// <typeparam name="TOutput"></typeparam> Всегда List! 
     /// <returns></returns>
-    public TOutput? GetDataBase<TOutput>(string file, string language) where TOutput : class
+    public TOutput? GetDataBase<TOutput>(string file, string language = "ru/") where TOutput : class
     {
         if (file is "planes.json" or "routes.json") language = "";
 

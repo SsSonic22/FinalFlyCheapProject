@@ -1,7 +1,11 @@
-﻿namespace FlyCheap.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FlyCheap.Models;
 
 public class AirportDb
 {
+    [Key]
+    public int Id { get; set; }
     public double Lat { get; set; }
     public double Lon { get; set; }
     public string CityCode { get; set; }
