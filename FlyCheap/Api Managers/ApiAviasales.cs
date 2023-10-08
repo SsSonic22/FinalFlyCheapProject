@@ -24,35 +24,15 @@ public class ApiAviaSales
     int limit = 30; // Количество записей на странице (по умолчанию 30, макс. 1000)
     int page = 1; // Номер страницы (для пропуска результатов)
     string sorting = "price"; // Сортировка цен (по цене или по популярности маршрута, по умолчанию: по цене)
-
     string
         unique = "false"; // Возвращает только уникальные маршруты (если указан только origin, true или false, по умолчанию: false)
 
-    public string Test() // удалить после отладки
-    {
-        HumanReadableConverter humanReadableConverter = new HumanReadableConverter();
-        StringBuilder sb = new StringBuilder();
 
-        var airports =
-            humanReadableConverter.GetHumanReadableAirways(FlightSearchRequestCreating(new DateTime(2023, 12, 20),
-                "Moscow", "Voronezh"));
-
-        foreach (var flightData in airports.data)
-        {
-            sb.Append("origin_airport: " + flightData.origin_airport + "\n");
-            sb.Append("destination_airport: " + flightData.destination_airport + "\n");
-            sb.Append("departure_at: " + flightData.departure_at + "\n");
-            sb.Append("airline: " + flightData.airline + "\n");
-            sb.Append("price: " + flightData.price + "\n");
-            sb.Append("----------------------------------------------" + "\n");
-        }
-
-        return sb.ToString();
-    }
-    
     // FlightSearchRequestCreating(new DateTime(2023, 12,20), "Москва", "Tokyo"); Пример вызова
-    public AirwaysJson FlightSearchRequestCreating(DateTime departureDate, string departureCity, string destinationCity)
+    public HumanReadableAirways FlightSearchRequestCreating(DateTime departureDate, string departureCity,
+        string destinationCity)
     {
+        var humanReadableConverter = new HumanReadableConverter();
         var departureAirPorts = FindAnAirports(departureCity);
         var destinationAirPorts = FindAnAirports(destinationCity);
 
@@ -63,8 +43,8 @@ public class ApiAviaSales
             returnDate = null,
             departureDate = $"{departureDate.Year}-{departureDate.Month:D2}-{departureDate.Day:D2}",
         };
-        
-        return RequestFlight(flightData);
+
+        return humanReadableConverter.GetHumanReadableAirways(RequestFlight(flightData));
     }
 
     private AirwaysJson RequestFlight(ObjectForRequestFlight flightData)
@@ -88,7 +68,7 @@ public class ApiAviaSales
                 httpRequest.returnDate = flightData.returnDate;
                 Thread.Sleep(100);
 
-                try 
+                try
                 {
                     string content = HttpRequest(httpRequest);
                     if (!string.IsNullOrEmpty(content))
@@ -111,7 +91,7 @@ public class ApiAviaSales
 
         return airwaysJson;
     }
-    
+
     private string? HttpRequest(ObjectForHttpRequest httpRequest)
     {
         string returnDateConstructor =
@@ -154,7 +134,7 @@ public class ApiAviaSales
 
         return null;
     }
-    
+
     private List<Airport>? FindAnAirports(string cityOrAirport = "", string iataType = "airport")
     {
         using (AirDbContext dbContext = new())
@@ -197,5 +177,5 @@ public class ApiAviaSales
 }
 
 /*
- 
+
 */

@@ -218,10 +218,8 @@ string GetFinalTickets(Fly fly)
 {
     var sb = new StringBuilder();
     var apiAviaSales = new ApiAviaSales();
-    var humanReadableConverter = new HumanReadableConverter();
-    var airports =
-        humanReadableConverter.GetHumanReadableAirways(apiAviaSales.FlightSearchRequestCreating(fly.DepartureDate,
-            fly.DepartureСity, fly.ArrivalСity));
+    var airports = apiAviaSales.FlightSearchRequestCreating(fly.DepartureDate,
+        fly.DepartureСity, fly.ArrivalСity);
 
     foreach (var flightData in airports.data)
     {
@@ -230,11 +228,10 @@ string GetFinalTickets(Fly fly)
         sb.Append("Время отправления: " + flightData.departure_at + "\n");
         sb.Append("Авиакомпания: " + flightData.airline + "\n");
         sb.Append("Цена: " + flightData.price + " " + airports.currency + "\n");
-        sb.Append("Продолжительность полёта: " + flightData.duration + "\n");
+        sb.Append("Продолжительность полёта: " + flightData.duration + " Мин." + "\n");
         sb.Append("Номер рейса: " + flightData.flight_number + "\n");
         sb.Append("----------------------------------------------" + "\n");
     }
-
-    Console.WriteLine(sb.ToString());
+    
     return sb.ToString();
 }
