@@ -35,7 +35,7 @@ public class ApiAviaSales
 
         var airports =
             humanReadableConverter.GetHumanReadableAirways(FlightSearchRequestCreating(new DateTime(2023, 12, 20),
-                "Москва", "Tokyo"));
+                "Moscow", "Voronezh"));
 
         foreach (var flightData in airports.data)
         {
@@ -88,7 +88,7 @@ public class ApiAviaSales
                 httpRequest.returnDate = flightData.returnDate;
                 Thread.Sleep(100);
 
-                try
+                try 
                 {
                     string content = HttpRequest(httpRequest);
                     if (!string.IsNullOrEmpty(content))
@@ -102,7 +102,7 @@ public class ApiAviaSales
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception e) // Тут можно логгировать ошибки
                 {
                     Console.WriteLine("Произошла ошибка при парсинге JSON: " + e.Message);
                 }
@@ -136,7 +136,7 @@ public class ApiAviaSales
                     //Console.WriteLine("content ===> " + content);
                     return content;
                 }
-                else
+                else // Тут можно логгировать ошибки
                 {
                     Console.WriteLine("Ошибка запроса");
                     content = response.Content.ReadAsStringAsync().Result;
@@ -145,7 +145,7 @@ public class ApiAviaSales
                     return content;
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) // Тут можно логгировать ошибки
             {
                 Console.WriteLine($"Произошла ошибка: {ex.Message}");
                 return null;
@@ -190,7 +190,7 @@ public class ApiAviaSales
                 return airportList;
             }
 
-            Console.WriteLine("По вашему запросу ничего не найдено.");
+            Console.WriteLine("По вашему запросу ничего не найдено."); // Тут можно логгировать ошибки
             return default;
         }
     }
