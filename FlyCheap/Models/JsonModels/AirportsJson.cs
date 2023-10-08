@@ -13,7 +13,7 @@ public class NameTranslations
     public string en { get; set; }
 }
 
-public class AirportJson 
+public class AirportJson : NamedEntity
 {
     public string city_code { get; set; }
     public string country_code { get; set; }
@@ -21,7 +21,7 @@ public class AirportJson
     public string time_zone { get; set; }
     public bool flightable { get; set; }
     public Coordinates coordinates { get; set; }
-    public string name { get; set; }
+    //public new string name { get; set; }
     public string code { get; set; }
     public string iata_type { get; set; }
 }

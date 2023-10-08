@@ -1,16 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FlyCheap.Models;
+using FlyCheap.Models.Countries;
+using FlyCheap.Models.Db;
+
+
 namespace FlyCheap.Db_Context;
 
 public class AirDbContext : DbContext
 {
-    public DbSet<AirportDb> Airports { get; set; }
+    public DbSet<Airport> Airports { get; set; }
+    public DbSet<Cities> Cityes { get; set; }
+    public DbSet<Airlines> Airlines { get; set; }
+    public DbSet<Countries> Countries { get; set; }
+   // public DbSet<NameTranslations> NameTranslations { get; set; }
+   // public DbSet<Cases> Cases { get; set; }
+    
     public static string _connectionString = "Host=localhost;Username=postgres;Password=123;Database=postgres";
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Укажите строку подключения к вашей базе данных
-        //optionsBuilder.UseSqlServer("YourConnectionStringHere");
         optionsBuilder.UseNpgsql(_connectionString);
     }
 }

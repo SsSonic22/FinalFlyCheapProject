@@ -17,10 +17,10 @@ public class NameTranslations
     public string en { get; set; }
 }
 
-public class CountriesJson
+public class CountriesJson : NamedEntity
 {
     public string code { get; set; }
-    public string name { get; set; }
+    // public string name { get; set; }
     public string currency { get; set; }
     public NameTranslations name_translations { get; set; }
     public Cases cases { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace FlyCheap.Models;
 
-public class RoutesJson
+public class RoutesJson : NamedEntity
 {
     public string airline_iata { get; set; }
     public object airline_icao { get; set; }

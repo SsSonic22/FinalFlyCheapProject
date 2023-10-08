@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FlyCheap.Models;
 using Newtonsoft.Json;
+using FlyCheap.Enums;
 
 namespace FlyCheap.Api_Managers;
 
@@ -26,22 +27,38 @@ public class ApiForRequestDb
     /// Получение баз данных. 
     /// </summary>
     /// <param name="file"></param>
-    /// <param name="language"></param>
+    /// <param name="tableCode">Выбор таблицы для обновления </param>
+    /// <param name="language">Выбор языка. По умолчанию русский.</param>
     /// <typeparam name="TOutput"></typeparam> Всегда List! 
     /// <returns></returns>
-    public TOutput? GetDataBase<TOutput>(string file, string language = "ru/") where TOutput : class
+    public TOutput? GetDataBase<TOutput>(TableCode tableCode,
+        LanguageCode languageCode = LanguageCode.Russian /*string language = "ru/"*/) where TOutput : IEnumerable<NamedEntity>
     {
-        if (file is "planes.json" or "routes.json") language = "";
+        //if (file is "planes.json" or "routes.json") language = "";
+
+        var file = ParametersMap.TableFileMappings.FirstOrDefault(x => x.Key == tableCode).Value;
+        var lang = ParametersMap.LanguageMappings.FirstOrDefault(x => x.Key == languageCode).Value;
+
+        if (tableCode is TableCode.Planes or TableCode.Routes)
+        {
+            lang = ParametersMap.LanguageMappings.FirstOrDefault(x => x.Key == LanguageCode.None).Value;
+        }
 
         var RequestFromDataBase = new HttpRequestForRequestFromDataBase()
         {
             file = file,
-            language = language,
+            //language = language,
+            language = lang,
         };
+
         var response = HttpRequest(RequestFromDataBase);
-        if (response.Ok) return ConvertJsonToDb<TOutput>(response.content);
+        if (response.Ok)
+        {
+            return ConvertFromJsonToDbFormat<TOutput>(response.content);
+        }
+
         Console.WriteLine("response.content ==> " + response.content);
-        return null;
+        return default;
     }
 
     private ResponseContainer HttpRequest(HttpRequestForRequestFromDataBase httpRequest)
@@ -54,36 +71,48 @@ public class ApiForRequestDb
             try
             {
                 var response = client.GetAsync(url).Result;
-                string content = "";
-                Console.WriteLine(content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     responseContainer.Ok = true;
                     responseContainer.content = response.Content.ReadAsStringAsync().Result;
                     //Console.WriteLine("content ===> " + content);
-                    return responseContainer;
                 }
                 else
                 {
                     Console.WriteLine("Ошибка запроса");
+                    responseContainer.Ok = false;
                     responseContainer.content = response.Content.ReadAsStringAsync().Result;
                     //Console.WriteLine("content ===> " + content);
-                    //throw new InvalidOperationException("Ошибка запроса!");
-                    return responseContainer;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Произошла ошибка подключения: {ex.Message}");
-                return responseContainer;
             }
+
+            return responseContainer;
         }
     }
 
-    private TOutput ConvertJsonToDb<TOutput>(string input)
+    private TOutput? ConvertFromJsonToDbFormat<TOutput>(string input) where TOutput : IEnumerable<NamedEntity>
     {
-        return JsonConvert.DeserializeObject<TOutput>(input);
+        var output = JsonConvert.DeserializeObject<TOutput>(input);
+        
+        foreach (var item in output)
+        {
+            if (item.name == null)
+            {
+                item.name = "none"; // Заменяем значение поля name на пустую строку
+            }
+        }
+        
+        if (output.Any(x => x.name == null))
+        {
+            throw new InvalidOperationException("------>>>>Обнаружены объекты с полем name, равным null.");
+        }
+        // return default;
+        return output;
     }
 }
 

@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Converter\Comparators\" />
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>
