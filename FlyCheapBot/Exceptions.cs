@@ -1,7 +1,10 @@
+//using FlyCheapLogger;
+
+using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 
-namespace FlyCheapBot.FlyCheap;
+namespace FlyCheapBot;
 
 public static class Exceptions
 {
@@ -15,7 +18,9 @@ public static class Exceptions
                 => $"Telegram API error:\n{apiRequestException.ErrorCode}\n{apiRequestException.Message}",
             _ => exception.ToString()
         };
-        Console.WriteLine(ErrorMessage);
+        Logger logger = new Logger();
+        Logger.Error(ErrorMessage);
+        
         return Task.CompletedTask;
     }
 }

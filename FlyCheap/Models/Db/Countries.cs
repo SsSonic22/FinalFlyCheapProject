@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FlyCheap.Models.Countries;
+namespace FlyCheap.Models.Db;
 
 
 

@@ -1,13 +1,13 @@
-﻿using FlyCheap.Models.AirportsJson;
-using FlyCheap.Api_Managers;
+﻿using FlyCheap.Api_Managers;
 using FlyCheap.Converter.Comparators;
 using FlyCheap.Db_Context;
 using FlyCheap.Enums;
 using FlyCheap.Models;
 using FlyCheap.Models.AirlinesJson;
-using FlyCheap.Models.Countries;
+using FlyCheap.Models.AirportsJson;
 using FlyCheap.Models.CountriesJson;
 using FlyCheap.Models.Db;
+using FlyCheap.Models.JsonModels;
 using FlyCheap.Models.JsonModels.Cityes;
 using FlyCheap.Utility_Components;
 using Microsoft.EntityFrameworkCore;

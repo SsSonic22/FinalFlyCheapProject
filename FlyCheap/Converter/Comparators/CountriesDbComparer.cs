@@ -1,4 +1,4 @@
-﻿using FlyCheap.Models.Countries;
+﻿using FlyCheap.Models.Db;
 
 namespace FlyCheap.Converter.Comparators;
 

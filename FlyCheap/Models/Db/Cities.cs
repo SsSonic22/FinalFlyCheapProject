@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace FlyCheap.Models;
+namespace FlyCheap.Models.Db;
 
 
 public class Cities : NamedEntity

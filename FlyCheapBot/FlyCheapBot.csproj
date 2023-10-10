@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\FlyCheapWorkQueue\FlyCheapWorkQueue.csproj" />
       <ProjectReference Include="..\FlyCheap\FlyCheap.csproj" />
     </ItemGroup>
 

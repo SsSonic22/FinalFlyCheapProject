@@ -1,6 +1,4 @@
-﻿using FlyCheap.Utility_Components;
-
-namespace FlyCheap.Models.AirportsJson;
+﻿namespace FlyCheap.Models.AirportsJson;
 
 public class Coordinates
 {

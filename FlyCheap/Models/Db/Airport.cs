@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FlyCheap.Models;
+namespace FlyCheap.Models.Db;
 
 public class Airport : NamedEntity
 {

@@ -1,4 +1,4 @@
-namespace FlyCheapBot.FlyCheap.Collections;
+namespace FlyCheapBot.Collections;
 
 public class CitiesCollection
 {

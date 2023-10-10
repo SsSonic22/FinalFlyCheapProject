@@ -10,12 +10,10 @@ using System.Linq;
 using System.Text;
 using FlyCheap;
 using FlyCheap.Api_Managers;
-using FlyCheapBot.FlyCheap;
-using FlyCheapBot.FlyCheap.Collections;
-using FlyCheapBot.FlyCheap.State.Models;
-using FlyCheapBot.FlyCheap.UI;
-
-#region
+using FlyCheapBot;
+using FlyCheapBot.Collections;
+using FlyCheapBot.State.Models;
+using FlyCheapBot.UI;
 
 var botClient = new TelegramBotClient(Configuration.Token);
 
@@ -27,7 +25,7 @@ var receiverOptions = new ReceiverOptions
     ThrowPendingUpdates = true
 };
 
-// Прослушка работы бота
+// Прослушка работы бота, бот постоянно ожидает сообщения от пользователя
 botClient.StartReceiving(
     HandleUpdatesAsync,
     Exceptions.HandleErrorAsync,
@@ -41,9 +39,8 @@ await Task.Delay(Int32.MaxValue);
 
 cts.Cancel();
 
-#endregion
-
-//Метод для обработки обновлений бота
+//Метод для обработки обновлений бота (здесь бот прослушивает сообщения {текстовые/c inline клавиатуры)
+//Заполнение каталога городами при страрте бота
 async Task HandleUpdatesAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
 {
     if (CitiesCollection.cities.Count == 0)
@@ -73,7 +70,7 @@ async Task HandleCommandMessage(ITelegramBotClient botClient, Message message)
 
     if (text == "/start")
     {
-        await botClient.SendTextMessageAsync(tgId, "Choose Button:", replyMarkup: MainMenu.GetMainMenu());
+        await botClient.SendTextMessageAsync(tgId, "Выберите действие:", replyMarkup: MainMenu.GetMainMenu());
         return;
     }
 
@@ -96,7 +93,7 @@ async Task HandleCommandMessage(ITelegramBotClient botClient, Message message)
                 flight.DepartureСity = cityFromMessage;
 
                 await botClient.SendTextMessageAsync(tgId,
-                    $"ваш город отправления {cityFromMessage}, теперь введите город назначения:");
+                    $"Ваш город отправления {cityFromMessage}, теперь введите город назначения:");
                 user.InputState = InputState.ArrivalСity;
                 return;
             }
@@ -122,8 +119,8 @@ async Task HandleCommandMessage(ITelegramBotClient botClient, Message message)
 
                 flight.ArrivalСity = cityFromMessage;
 
-                await botClient.SendTextMessageAsync(tgId, $"город прибытия {cityFromMessage}, " +
-                                                           "теперь введите дату отправления в формате  дд.мм.гггг");
+                await botClient.SendTextMessageAsync(tgId, $"Город прибытия {cityFromMessage}, " +
+                                                           "теперь введите дату вылета в формате  дд.мм.гггг");
                 user.InputState = InputState.DepartureDate;
                 return;
             }
@@ -138,30 +135,34 @@ async Task HandleCommandMessage(ITelegramBotClient botClient, Message message)
         {
             var dateFromMessage = message.Text;
             DateTime parsedDate;
+            
             if (DateTime.TryParse(dateFromMessage, out parsedDate))
             {
                 var flight = FlightsList.flights
                     .First(x => x.UserTgId == tgId && x.resultTickets == null);
 
                 flight.DepartureDate = parsedDate;
-
                 user.InputState = InputState.FullState;
 
+                //  Передаем в WorkPlayLoad задачу
+                //WorkPayload workPayload = new WorkPayload() { Data = "Задача " + flight.Id.ToString() };
                 var result = GetFinalTickets(flight);
 
+
                 await botClient.SendTextMessageAsync(tgId, "Результат поиска:\n" + result);
+                await botClient.SendTextMessageAsync(tgId, "Выберите действие:", replyMarkup: MainMenu.GetMainMenu());
                 return;
             }
             else
             {
                 await botClient.SendTextMessageAsync(tgId,
-                    "дата вылета введена неверно - повторите ввод:в формате  дд.мм.гггг");
+                    "Дата вылета введена неверно - повторите ввод:в формате  дд.мм.гггг");
             }
         }
     }
 
 //дефолтный ответ бота в случае неправильного ввода команды пользователем
-    await botClient.SendTextMessageAsync(tgId, $"To start working with the bot, send the command /start \n");
+    await botClient.SendTextMessageAsync(tgId, $"Для начала работы с ботом FlyCheap, введите команду /start \n");
 }
 
 //Метод обрабатывающий нажатие определенной кнопки inline клавиатуры
@@ -177,7 +178,7 @@ async Task HandleCallbackQuery(ITelegramBotClient botClient, CallbackQuery callb
     {
         await botClient.SendTextMessageAsync(
             callbackQuery.Message.Chat.Id,
-            $"Enter the city of departure"
+            $"Введите город вылета"
         );
 
         user.InputState = InputState.DepartureСity;
@@ -191,7 +192,7 @@ async Task HandleCallbackQuery(ITelegramBotClient botClient, CallbackQuery callb
     {
         await botClient.SendTextMessageAsync(
             callbackQuery.Message.Chat.Id,
-            $"You choose My Flights"
+            $"Мои авиарейсы"
         );
         return;
     }
@@ -216,22 +217,34 @@ async Task HandleCallbackQuery(ITelegramBotClient botClient, CallbackQuery callb
 //Метод вывода найденных результатов по авиарейсам
 string GetFinalTickets(Fly fly)
 {
+    //Передаем задачу и запускаем Worker
+    // WorkManager.AddWork(workPayload);
+    // WorkManager.StartWorker();
+
     var sb = new StringBuilder();
     var apiAviaSales = new ApiAviaSales();
-    var airports = apiAviaSales.FlightSearchRequestCreating(fly.DepartureDate,
+    var airways = apiAviaSales.FlightSearchRequestCreating(fly.DepartureDate,
         fly.DepartureСity, fly.ArrivalСity);
 
-    foreach (var flightData in airports.data)
+    if (airways.data.Count != 0)
     {
-        sb.Append("Аэропорт отправления: " + flightData.origin_airport + "\n");
-        sb.Append("Аэропорт назначения: " + flightData.destination_airport + "\n");
-        sb.Append("Время отправления: " + flightData.departure_at + "\n");
-        sb.Append("Авиакомпания: " + flightData.airline + "\n");
-        sb.Append("Цена: " + flightData.price + " " + airports.currency + "\n");
-        sb.Append("Продолжительность полёта: " + flightData.duration + " Мин." + "\n");
-        sb.Append("Номер рейса: " + flightData.flight_number + "\n");
-        sb.Append("----------------------------------------------" + "\n");
+        foreach (var flightData in airways.data)
+        {
+            sb.Append("Аэропорт отправления: " + flightData.origin_airport + "\n");
+            sb.Append("Аэропорт назначения: " + flightData.destination_airport + "\n");
+            sb.Append("Время отправления: " + flightData.departure_at + "\n");
+            sb.Append("Авиакомпания: " + flightData.airline + "\n");
+            sb.Append("Цена: " + flightData.price + " " + airways.currency + "\n");
+            sb.Append("Продолжительность полёта: " + flightData.duration + " Мин." + "\n");
+            sb.Append("Номер рейса: " + flightData.flight_number + "\n");
+            sb.Append("----------------------------------------------" + "\n");
+        }
+
+        return sb.ToString();
     }
-    
-    return sb.ToString();
+
+    else
+    {
+        return "Авиарейсов по данному направлению не найдено!";
+    }
 }

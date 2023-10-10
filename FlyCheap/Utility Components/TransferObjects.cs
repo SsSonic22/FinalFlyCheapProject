@@ -2,6 +2,7 @@
 using FlyCheap.Converter.Comparators;
 using FlyCheap.Enums;
 using FlyCheap.Models;
+using FlyCheap.Models.Db;
 
 namespace FlyCheap.Utility_Components;
 

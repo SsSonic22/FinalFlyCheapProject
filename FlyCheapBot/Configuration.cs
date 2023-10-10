@@ -1,4 +1,4 @@
-namespace FlyCheapBot.FlyCheap;
+namespace FlyCheapBot;
 
 public static class Configuration
 {

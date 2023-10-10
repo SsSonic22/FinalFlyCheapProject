@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using FlyCheap.Db_Context;
 using FlyCheap.Models;
+using FlyCheap.Models.Db;
 using FlyCheap.Models.JsonModels;
 using Newtonsoft.Json;
 using FlyCheap.Utility_Components;

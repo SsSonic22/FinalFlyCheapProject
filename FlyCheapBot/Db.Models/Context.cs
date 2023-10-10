@@ -1,6 +1,6 @@
-using FlyCheapBot.FlyCheap.State.Models;
+using FlyCheapBot.State.Models;
 
-namespace FlyCheapBot.FlyCheap.Db.Models;
+namespace FlyCheapBot.Db.Models;
 
 public static class Context // : DbContext
 {

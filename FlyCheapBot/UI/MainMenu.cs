@@ -2,7 +2,7 @@
 
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace FlyCheapBot.FlyCheap.UI;
+namespace FlyCheapBot.UI;
 
 public static class MainMenu
 {
@@ -12,8 +12,8 @@ public static class MainMenu
         {
             new[]
             {
-                InlineKeyboardButton.WithCallbackData("Search Flight", "searchFlight"),
-                InlineKeyboardButton.WithCallbackData("My Flights", "myFlights"),
+                InlineKeyboardButton.WithCallbackData("Поиск авиарейса", "searchFlight"),
+                InlineKeyboardButton.WithCallbackData("Мои рейсы", "myFlights"),
             }
         });
         return mainMenu;

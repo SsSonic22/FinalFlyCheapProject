@@ -1,7 +1,7 @@
-using FlyCheapBot.FlyCheap.Db.Models;
-using FlyCheapBot.FlyCheap.State.Models;
+using FlyCheapBot.Db.Models;
+using FlyCheapBot.State.Models;
 
-namespace FlyCheapBot.FlyCheap;
+namespace FlyCheapBot;
 
 public static class UserUtils
 {

@@ -1,6 +1,6 @@
-using FlyCheapBot.FlyCheap.State.Models;
+using FlyCheapBot.State.Models;
 
-namespace FlyCheapBot.FlyCheap.Collections;
+namespace FlyCheapBot.Collections;
 
 public static class FlightsList
 {

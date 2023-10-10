@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FlyCheap.Models;
-using FlyCheap.Models.Countries;
 using FlyCheap.Models.Db;
 
 
@@ -15,7 +14,7 @@ public class AirDbContext : DbContext
    // public DbSet<NameTranslations> NameTranslations { get; set; }
    // public DbSet<Cases> Cases { get; set; }
     
-    public static string _connectionString = "Host=localhost;Username=postgres;Password=123;Database=postgres";
+    public static string _connectionString = "Host=localhost;Username=postgres;Password=root;Database=postgres";
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

@@ -1,4 +1,5 @@
 ﻿using FlyCheap.Models;
+using FlyCheap.Models.Db;
 
 namespace FlyCheap.Converter.Comparators;
 

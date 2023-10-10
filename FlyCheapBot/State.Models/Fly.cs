@@ -1,4 +1,4 @@
-namespace FlyCheapBot.FlyCheap.State.Models;
+namespace FlyCheapBot.State.Models;
 
 public class Fly
 {
